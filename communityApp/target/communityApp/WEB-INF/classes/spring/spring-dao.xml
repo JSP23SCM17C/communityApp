@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 配置整合mybatis过程 -->
+	<!-- 1.配置数据库相关参数properties的属性：${url} -->
+<!--	<bean class="ca.bytetube.communityApp.util.EncryptPropertyPlaceholderConfigurer">-->
+<!--		<property name="locations">-->
+<!--			<list>-->
+<!--				<value>classpath:jdbc.properties</value>-->
+<!--				<value>classpath:redis.properties</value>-->
+<!--			</list>-->
+<!--		</property>-->
+<!--		<property name="fileEncoding" value="UTF-8" />-->
+<!--	</bean>-->
+	<!-- 2.数据库连接池 -->
+	<context:component-scan base-package="ca.bytetube.communityApp" />
+<!--	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+<!--		<property name="location" value="classpath:jdbc.properties" />-->
+<!--	</bean>-->
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties"/>
+
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<!-- Basic DataSource configuration -->
+		<!--		<property name="url" value="jdbc:mysql://localhost:3306/yourDatabaseName" />-->
+		<!--		<property name="username" value="yourUsername" />-->
+		<!--		<property name="password" value="yourPassword" />-->
+
+		<property name="url" value="${jdbc.url}" />
+<!--		<property name="username" value="u1+5PQQS+58fJAfVsP+M2w==" />-->
+<!--		<property name="password" value="KkPm/JVgVwgeckv762BRLg==" />-->
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClassName" value="${jdbc.driver}" />
+
+		<!-- Druid specific configuration -->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="20" />
+
+		<!-- Configuration for monitoring and management -->
+		<!-- Enable StatFilter for SQL monitoring -->
+		<property name="filters" value="stat" />
+	</bean>
+
+	<!-- 2.数据库连接池 -->
+<!--	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+<!--		&lt;!&ndash; 配置连接池属性 &ndash;&gt;-->
+<!--		<property name="driverClass" value="${jdbc.driver}" />-->
+<!--		<property name="jdbcUrl" value="${jdbc.url}" />-->
+<!--		<property name="user" value="${jdbc.username}" />-->
+<!--		<property name="password" value="${jdbc.password}" />-->
+
+<!--		&lt;!&ndash; c3p0连接池的私有属性 &ndash;&gt;-->
+<!--		<property name="maxPoolSize" value="30" />-->
+<!--		<property name="minPoolSize" value="10" />-->
+<!--		&lt;!&ndash; 关闭连接后不自动commit &ndash;&gt;-->
+<!--		<property name="autoCommitOnClose" value="false" />-->
+<!--		&lt;!&ndash; 获取连接超时时间 &ndash;&gt;-->
+<!--		<property name="checkoutTimeout" value="10000" />-->
+<!--		&lt;!&ndash; 当获取连接失败重试次数 &ndash;&gt;-->
+<!--		<property name="acquireRetryAttempts" value="2" />-->
+<!--	</bean>-->
+
+	<!-- 3.使用mybatis时，需要配置SqlSessionFactory对象 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据库连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置MyBatis全局配置文件:mybatis-config.xml -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<!-- 扫描entity包 使用别名 -->
+		<property name="typeAliasesPackage" value="ca.bytetube.communityApp.entity" />
+		<!-- 扫描sql配置文件:mapper需要的xml文件 mapper中的各个xml文件相当于dao层的实现类-->
+		<property name="mapperLocations" value="classpath:mapper/*.xml" />
+	</bean>
+
+	<!-- 4.配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 注入sqlSessionFactory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<!-- 给出需要扫描Dao接口包 -->
+		<property name="basePackage" value="ca.bytetube.communityApp.dao" />
+	</bean>
+</beans>
