@@ -127,9 +127,9 @@ public class ImageUtil {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Thumbnails.of(new File("/Users/jk/Desktop/image/logo.jpg")).size(200, 200)
+		Thumbnails.of(new File("/Users/jk/Desktop/image/logog.jpg")).size(200, 200)
 				.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "/watermark.jpg")), 0.25f)
-				.outputQuality(0.8f).toFile("/Users/jk/Desktop/image/logo_new.jpg");
+				.outputQuality(0.4f).toFile("/Users/jk/Desktop/image/logo_new.jpg");
 	}
 
 	/**

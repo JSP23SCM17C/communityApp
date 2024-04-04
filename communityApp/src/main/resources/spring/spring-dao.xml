@@ -8,21 +8,21 @@
 
 	<!-- 配置整合mybatis过程 -->
 	<!-- 1.配置数据库相关参数properties的属性：${url} -->
-<!--	<bean class="ca.bytetube.communityApp.util.EncryptPropertyPlaceholderConfigurer">-->
-<!--		<property name="locations">-->
-<!--			<list>-->
-<!--				<value>classpath:jdbc.properties</value>-->
-<!--				<value>classpath:redis.properties</value>-->
-<!--			</list>-->
-<!--		</property>-->
-<!--		<property name="fileEncoding" value="UTF-8" />-->
-<!--	</bean>-->
+	<bean class="ca.bytetube.communityApp.util.EncryptPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:redis.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="UTF-8" />
+	</bean>
 	<!-- 2.数据库连接池 -->
 	<context:component-scan base-package="ca.bytetube.communityApp" />
 <!--	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
 <!--		<property name="location" value="classpath:jdbc.properties" />-->
 <!--	</bean>-->
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties"/>
+<!--	<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties"/>-->
 
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">

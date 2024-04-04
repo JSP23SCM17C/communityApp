@@ -83,7 +83,7 @@ public class DESUtil {
 
     public static void main(String[] args) {
         System.out.println(getEncryptString("peiling"));//WnplV/ietfQ=
-        System.out.println(getEncryptString("B2YT*eT-uBE;"));//KkPm/JVgVwgeckv762BRLg==
+        System.out.println(getEncryptString("Huadian@0708"));//KkPm/JVgVwgeckv762BRLg==
     }
 
 }
